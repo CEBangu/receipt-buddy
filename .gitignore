@@ -1,0 +1,25 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Notebooks
+/testing-notebooks
+
+# Sample data
+testing-notebooks/testing-saves
+
+# Secrets
+credentials.json
+token.json
+.env
+
+
+# Other 
+quickstart.py
