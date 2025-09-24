@@ -33,12 +33,12 @@ class ExcelWriter:
         except KeyError:
             raise ValueError(f"Table '{self.table_name}' not found in Excel file. Please check if the table name has changed. It should be 'ReceiptTable'")
 
-        table_params = self._get_table_parameters(table=table, worksheet=worksheet)
+        tps = self._get_table_parameters(table=table, worksheet=worksheet)
 
-        if (table_params.end_row == table_params.first_data_row) and not self._row_has_values(r=table_params.first_data_row, worksheet=worksheet):
-            write_row = table_params.first_data_row
+        if (tps.end_row == tps.first_data_row) and not self._row_has_values(r=tps.first_data_row, worksheet=worksheet):
+            write_row = tps.first_data_row
         else:
-            write_row = table_params.end_row + 1 
+            write_row = tps.end_row + 1 
 
         for r in ModelOutput.rows:
             item = worksheet.cell(row=write_row, column=2, value=r[0])
@@ -46,10 +46,10 @@ class ExcelWriter:
             quantity = worksheet.cell(row=write_row, column=3, value=r[1]) 
 
             price = worksheet.cell(row=write_row, column=4, value=r[2]) 
-            price.number_format = table_params.template_price_format
+            price.number_format = tps.template_price_format
 
             price_per_unit = worksheet.cell(row=write_row, column=5, value=r[3]) 
-            price_per_unit.number_format = table_params.template_price_per_unit_format
+            price_per_unit.number_format = tps.template_price_per_unit_format
 
             date = worksheet.cell(row=write_row, column=6, value=r[4]) 
             date.number_format = "DD/MM/YYYY"
@@ -57,10 +57,15 @@ class ExcelWriter:
 
             write_row += 1
         
-        end_row = max(table_params.end_row, write_row - 1) # account for the increment
+        end_row = max(tps.end_row, write_row - 1) # account for the increment
 
-        table.ref = f"{table_params.start_col}{table_params.start_row}:{table_params.end_col}{end_row}"
+        table.ref = f"{tps.start_col}{tps.start_row}:{tps.end_col}{end_row}"
         workbook.save(self.write_path)
+
+
+
+
+# Helpers
 
     def _get_table_parameters(self, table, worksheet):
         start, end = table.ref.split(":")
@@ -82,6 +87,11 @@ class ExcelWriter:
     
     def _row_has_values(self, r, worksheet):
         return any(worksheet.cell(r, c).value not in (None, "") for c in range(2, 7))
+
+
+
+
+# class for the table stuff
 
 @dataclass
 class TableProperties:
