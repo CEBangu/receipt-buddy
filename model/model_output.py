@@ -69,3 +69,5 @@ class ModelOutput(BaseModel):
                 date=date
             ))
         return cls(raw_model_text=raw_model_text, rows=rows)
+
+#TODO: ModelOutputError

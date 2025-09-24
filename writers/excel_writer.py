@@ -1,5 +1,5 @@
 import os
-from model.model_wrapper import ModelOutput
+from model.model_output import ModelOutput
 from dataclasses import dataclass
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
