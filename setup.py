@@ -32,11 +32,15 @@ def main():
 
     # run model on the payloads
     model_outputs = []
+    number_of_receipts = len(payloads)
+    receipts_processed = 1
     for payload in payloads:
       try:
         mo = gemini.respond(payload)
         if mo and getattr(mo, "rows", None):
           model_outputs.append(mo)
+          print(f"Receipt {receipts_processed}/{number_of_receipts} Processed")
+          receipts_processed += 1
       except Exception as e:
         # log and keeep going
         print(f"Model failed on one payload: {e}")
