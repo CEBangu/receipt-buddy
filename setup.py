@@ -3,7 +3,7 @@ from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-from email_service.mail_grabber import EmailGrabber
+from email_service.email_grabber import EmailGrabber
 from model.model_wrapper import Gemini
 from writers.excel_writer import ExcelWriter
 
@@ -33,8 +33,7 @@ def setup(SCOPES):
       token.write(creds.to_json())
   creds = Credentials.from_authorized_user_file("token.json", SCOPES)
   return creds
-      
-  
+
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 cwd = os.getcwd
@@ -51,13 +50,16 @@ def main():
 
     model_ouptuts = []
 
-    mail_grabber.ingest_historical_messages()
+    payloads = mail_grabber.ingest_historical_messages()
 
-    for payload in mail_grabber.message_contents:
+    for payload in payloads:
       response = gemini.respond(payload)
       model_ouptuts.append(response)
 
     excel_writer.write_rows(model_ouptuts)
+
+    final_email = payloads[-1]
+    
 
 if __name__ == "__main__":
   main()
