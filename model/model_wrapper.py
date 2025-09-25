@@ -19,8 +19,9 @@ class Gemini(genai.Client):
             raise RuntimeError(
                 "Missing Gemini Api key. Please set it in .env (GEMINI_API_KEY=...)"
             )
-    
-        self.model = genai.Client(api_key=api_key)
+
+        super().__init__(api_key=api_key)
+
         self.model_name = model_name
         self.temperature = temperature
         self.system_instruction = self._get_system_prompt()
@@ -41,7 +42,7 @@ class Gemini(genai.Client):
             ]
         )
 
-        text_out = response.text
+        text_out = getattr(response, "text", None) or ""
         date_out = file_payload['date']
 
         return ModelOutput.from_raw(raw_model_text=text_out, date=date_out)

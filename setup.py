@@ -28,6 +28,8 @@ def main():
       print("No emails found. Try a different sender.")
       return 
 
+    print("Emails found")
+
     # run model on the payloads
     model_outputs = []
     for payload in payloads:
