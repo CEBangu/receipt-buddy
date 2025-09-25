@@ -40,19 +40,6 @@ class Gemini(genai.Client):
 
         return ModelOutput.from_raw(raw_model_text=text_out, date=date_out)
 
-    #TODO: Not entirely sure this is how I want to handle this ... 
-    # It might make more sense to have this be part of the MailGrabber class
-    def _ingest_data(self, attachment_date: Dict) -> Tuple[str, datetime]:
-        """
-        This function takes in dictionary with the attachment to decode, and its date, and 
-        feeds it to the model
-        """
-        attachment = attachment_date['data']
-        date = attachment_date['date']
-        file_data = base64.urlsafe_b64decode(attachment.encode("UTF-8"))
-
-        return file_data, date
-
     def _get_system_prompt(self,) -> None:
         system_prompt_path = self._get_system_prompt_path()
 
