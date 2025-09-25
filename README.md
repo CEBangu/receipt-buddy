@@ -11,7 +11,7 @@ Proposed workflow:
     2. Extract relevant price information via Gemini 2.5 Flash API as JSON
         2.1. document in -> json out - just have to double check that the image API supports PDF? I suppose it must. ✅
     3. Parse JSON to update Excel spreadsheet.
-        3.1 Have to also create the spreadsheet. This also informs the structure of the prompt, so will be some recursive process here.
+        3.1 Have to also create the spreadsheet. This also informs the structure of the prompt, so will be some recursive process here. ✅
     4. Rinse & Repeat
         4.1 make it downloadable for other people?
 

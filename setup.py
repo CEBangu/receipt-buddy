@@ -8,7 +8,7 @@ from utils.utils import write_checkpoint, setup
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 cwd = os.getcwd
-senders = [""]
+senders = ["ticket-caisse@e-ticket.cooperative-u.fr"]
 model_name = "gemini-2.5-flash-lite"
 temperature = 0.2
 checkpoint_file_path = os.path.join(cwd, "checkpoint.json")
