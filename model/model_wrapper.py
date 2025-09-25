@@ -54,5 +54,5 @@ class Gemini(genai.Client):
     
     def _get_system_prompt_path(self):
         cwd = os.getcwd()
-        system_prompt_path = os.path.join(cwd, "system_prompt.txt")
+        system_prompt_path = os.path.join(cwd, "model", "system_prompt.txt")
         return system_prompt_path
