@@ -1,10 +1,9 @@
 import os
 import base64
 
-from datetime import datetime
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-from typing import List, Dict, Tuple
 
 from model.model_output import ModelOutput
 
@@ -13,8 +12,15 @@ from model.model_output import ModelOutput
 
 class Gemini(genai.Client):
     def __init__(self, model_name, temperature):
-        
-        self.model = genai.Client()
+
+        load_dotenv()
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise RuntimeError(
+                "Missing Gemini Api key. Please set it in .env (GEMINI_API_KEY=...)"
+            )
+    
+        self.model = genai.Client(api_key=api_key)
         self.model_name = model_name
         self.temperature = temperature
         self.system_instruction = self._get_system_prompt()

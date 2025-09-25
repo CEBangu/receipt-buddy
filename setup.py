@@ -7,7 +7,7 @@ from utils.utils import write_checkpoint, setup
 
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
-cwd = os.getcwd
+cwd = os.getcwd()
 senders = ["ticket-caisse@e-ticket.cooperative-u.fr"]
 model_name = "gemini-2.5-flash-lite"
 temperature = 0.2
@@ -18,7 +18,7 @@ def main():
     credentials = setup(SCOPES=SCOPES)
     print("Credentials validated")
 
-    mail_grabber = EmailGrabber(credenitals=credentials, senders=senders)
+    mail_grabber = EmailGrabber(credentials=credentials, senders=senders)
     gemini = Gemini(model_name=model_name, temperature=temperature)
     excel_writer = ExcelWriter(app_directory=cwd)
 
