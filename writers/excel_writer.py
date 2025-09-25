@@ -44,6 +44,8 @@ class ExcelWriter:
         else:
             write_row = tps.end_row + 1 
 
+        num_rows = len(rows)
+        written_row_count = 1
         for r in rows:
             item = worksheet.cell(row=write_row, column=2, value=r['item'])
 
@@ -59,12 +61,20 @@ class ExcelWriter:
             date.number_format = "DD/MM/YYYY"
             date.alignment = Alignment(horizontal="right")
 
+            print(f"Row {written_row_count} of {num_rows} written")
+            written_row_count += 1
+
             write_row += 1
         
         end_row = max(tps.end_row, write_row - 1) # account for the increment
 
         table.ref = f"{tps.start_col}{tps.start_row}:{tps.end_col}{end_row}"
+
+        print("Finished writing...")
+
         workbook.save(self.write_path)
+
+        print("Workbook saved!")
 
 
 

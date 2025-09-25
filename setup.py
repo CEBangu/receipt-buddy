@@ -16,6 +16,8 @@ checkpoint_file_path = os.path.join(cwd, "checkpoint.json")
 def main():
 
     credentials = setup(SCOPES=SCOPES)
+    print("Credentials validated")
+
     mail_grabber = EmailGrabber(credenitals=credentials, senders=senders)
     gemini = Gemini(model_name=model_name, temperature=temperature)
     excel_writer = ExcelWriter(app_directory=cwd)
@@ -50,6 +52,8 @@ def main():
     last_ms = max(p["internal_ms"] for p in payloads)
 
     write_checkpoint(checkpoint_file_path, last_ms)
+
+    print("🤖: Done!")
 
 if __name__ == "__main__":
   main()
