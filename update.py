@@ -3,7 +3,7 @@ import os
 from email_service.email_grabber import EmailGrabber
 from model.model_wrapper import Gemini
 from writers.excel_writer import ExcelWriter
-from utils.utils import write_checkpoint, setup
+from utils.utils import write_checkpoint, setup, read_checkpoint
 
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
@@ -20,8 +20,9 @@ def main():
     gemini = Gemini(model_name=model_name, temperature=temperature)
     excel_writer = ExcelWriter(app_directory=cwd)
 
+    last_internal_ms = read_checkpoint(checkpoint_file_path)
     # get emails
-    payloads = mail_grabber.ingest_historical_messages()
+    payloads, max_ms = mail_grabber.ingest_new_messages(last_internal_ms=last_internal_ms)
     if not payloads:
       print("No emails found. Try a different sender.")
       return 
@@ -47,15 +48,11 @@ def main():
 
     excel_writer.write_rows(rows_to_write)
 
-    last_ms = max(p["internal_ms"] for p in payloads)
+    write_checkpoint(checkpoint_file_path, max_ms)
 
-    write_checkpoint(checkpoint_file_path, last_ms)
+
 
 if __name__ == "__main__":
   main()
 
-      
-      
-
-
-
+    

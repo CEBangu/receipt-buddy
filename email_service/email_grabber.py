@@ -33,7 +33,7 @@ class EmailGrabber:
         """
         This takes in the last internal milisecond timestamp of ingested emails, and only grabs emails
         that are newer than that.
-        Returns a list of {"file_data": bytes, "date": date, internal_ms: internal ms}
+        Returns a tuple: list of {"file_data": bytes, "date": date, internal_ms: internal ms} as well as an int max_ms
         """
         # coarse day filter for the query
         after_str = self._coarse_after_from_ms(ms=last_internal_ms)

@@ -28,7 +28,7 @@ def read_checkpoint(path: str):
         return 0
 
 
-def setup(SCOPES):
+def setup(SCOPES: str):
   """
   This funciton is copied from Google quickstart.py file to make sure that the API 
   works for the user.
@@ -39,7 +39,6 @@ def setup(SCOPES):
   # time.
   if os.path.exists("token.json"):
     creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-    return creds
   # If there are no (valid) credentials available, let the user log in.
   if not creds or not creds.valid:
     if creds and creds.expired and creds.refresh_token:
@@ -52,5 +51,5 @@ def setup(SCOPES):
     # Save the credentials for the next run
     with open("token.json", "w") as token:
       token.write(creds.to_json())
-  creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+      
   return creds
