@@ -51,7 +51,7 @@ def main():
 
     model_ouptuts = []
 
-    mail_grabber.ingest_historical_emails()
+    mail_grabber.ingest_historical_messages()
 
     for payload in mail_grabber.message_contents:
       response = gemini.respond(payload)
