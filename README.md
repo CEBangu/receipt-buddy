@@ -1,4 +1,4 @@
-## Receipt Reader 🧾 - v1 (Mac Only)
+## Receipt Reader 🧾 - v1
 
 
 This app uses Gemini-2.5-flash-lite to read and extract information from grocery receipts in your gmail. It then logs this information to an excel spreadsheet for further exploration and analysis.
@@ -19,5 +19,7 @@ You need to set your own senders. If you shop at UExpress in France, this is alr
 If that is not the case, then you will need to change the function. I'll add some easier customizability later. If the PDF order is mixed up sometimes then you can find it by looking for the name. Just play around with `_get_attachment_payload()` method. 
 
 3. **Initialization:**
+
+Automatic updates is **Mac** only for now. `setup.py` and `update.py` should work on other systems as well.
 
 Once that is done, create the venv with `uv --sync locked`. Then, run the `initialize.py` script. NB! This script creates a couple of notable things. Firslty, it creates an executable to run the `update.py` on its own, to add new receipts after the historical ones are done. It also creates a plist in `~Libray/LaunchAgents` to run the update script every 4 hours, to check for new receipts. If you DO NOT want this behaviour, you can run `setup.py` manually, and then `update.py` whenever you want to look for new receipts.
