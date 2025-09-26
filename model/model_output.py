@@ -16,8 +16,8 @@ class Row(BaseModel):
     """
     item: str
     quantity: int
-    price: int
-    price_per_unit: int
+    price: float
+    price_per_unit: float
     date: datetime
 
 
