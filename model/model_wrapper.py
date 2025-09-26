@@ -26,6 +26,9 @@ class Gemini(genai.Client):
         self.temperature = temperature
         self.system_instruction = self._get_system_prompt()
 
+        if not self.system_instruction.strip():
+            print("[Gemini] WARNING: system_prompt.txt empty or not found")
+
 
     def respond(self, file_payload):
         
@@ -39,21 +42,19 @@ class Gemini(genai.Client):
                 types.Part.from_bytes(
                     data=file_payload['file_data'], mime_type="application/pdf"
                 )
-            ]
+            ],
         )
-
+        print(response.text)
         text_out = getattr(response, "text", None) or ""
         date_out = file_payload['date']
 
         return ModelOutput.from_raw(raw_model_text=text_out, date=date_out)
 
-    def _get_system_prompt(self,) -> None:
-        system_prompt_path = self._get_system_prompt_path()
-
-        with open(system_prompt_path, "r", encoding="utf-8") as f:
-            self.system_instruction = f.read()
-    
-    def _get_system_prompt_path(self):
-        cwd = os.getcwd()
-        system_prompt_path = os.path.join(cwd, "model", "system_prompt.txt")
-        return system_prompt_path
+    def _get_system_prompt(self) -> str:
+        here = os.path.dirname(os.path.abspath(__file__)) # this file's dir
+        path = os.path.join(here, "system_prompt.txt")
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return f.read()
+        except FileNotFoundError:
+            return ""
