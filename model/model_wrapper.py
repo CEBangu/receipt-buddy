@@ -44,7 +44,7 @@ class Gemini(genai.Client):
                 )
             ],
         )
-        print(response.text)
+        # print(response.text)
         text_out = getattr(response, "text", None) or ""
         date_out = file_payload['date']
 

@@ -47,14 +47,14 @@ class ExcelWriter:
         num_rows = len(rows)
         written_row_count = 1
         for r in rows:
-            item = worksheet.cell(row=write_row, column=2, value=r['item'])
+            item = worksheet.cell(row=write_row, column=2, value=r.item)
 
-            quantity = worksheet.cell(row=write_row, column=3, value=r['quantity']) 
+            quantity = worksheet.cell(row=write_row, column=3, value=r.quantity) 
 
-            price = worksheet.cell(row=write_row, column=4, value=r['price']) 
+            price = worksheet.cell(row=write_row, column=4, value=r.price) 
             price.number_format = tps.template_price_format
 
-            price_per_unit = worksheet.cell(row=write_row, column=5, value=r['price_per_unit']) 
+            price_per_unit = worksheet.cell(row=write_row, column=5, value=r.price_per_unit) 
             price_per_unit.number_format = tps.template_price_per_unit_format
 
             date = worksheet.cell(row=write_row, column=6, value=r['date']) 

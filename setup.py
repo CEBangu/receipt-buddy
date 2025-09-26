@@ -20,7 +20,7 @@ def main():
 
     mail_grabber = EmailGrabber(credentials=credentials, senders=senders)
     gemini = Gemini(model_name=model_name, temperature=temperature)
-    print(gemini.system_instruction)
+    # print(gemini.system_instruction)
     excel_writer = ExcelWriter(app_directory=cwd)
 
     # get emails
