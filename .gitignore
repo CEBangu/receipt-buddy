@@ -23,3 +23,5 @@ token.json
 
 # Other 
 quickstart.py
+checkpoint.json
+receipt_buddy_first_ingest.xlsx
