@@ -67,6 +67,6 @@ class ModelOutput(BaseModel):
                 price_per_unit=price/qty if qty else 0.0,
                 date=date
             ))
-        return cls(raw_model_text=raw_model_text, rows=rows)
+        return cls(raw=raw_model_text, rows=rows)
 
 #TODO: ModelOutputError
