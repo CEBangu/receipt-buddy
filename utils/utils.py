@@ -72,14 +72,3 @@ def rate_limit():
     if wait > 0:
         time.sleep(wait)
     _last_call_ts = time.perf_counter()
-
-def handle_quota_error(exc: Exception) -> float:
-    """
-    Inspect an exception, and if it's a 429 RESOURCE_EXHAUSTED,
-    return the suggested delay in seconds. Otherwise return -1.
-    """
-    msg = str(exc)
-    if "RESOURCE_EXHAUSTED" in msg or "429" in msg:
-        m = re.search(r"retry in ([\d\.]+)s", msg)
-        return float(m.group(1)) if m else 25.0
-    return -1.0

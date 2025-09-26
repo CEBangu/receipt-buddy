@@ -5,7 +5,7 @@ import re
 from email_service.email_grabber import EmailGrabber
 from model.model_wrapper import Gemini
 from writers.excel_writer import ExcelWriter
-from utils.utils import write_checkpoint, setup, rate_limit, handle_quota_error
+from utils.utils import write_checkpoint, setup, rate_limit
 
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
