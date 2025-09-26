@@ -2,6 +2,7 @@ import os
 import re
 import json
 import time
+import tomllib
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -29,6 +30,9 @@ def read_checkpoint(path: str):
     except (json.JSONDecodeError, ValueError):
         return 0
 
+def load_config(path="config.toml"):
+    with open(path, "rb") as f:
+        return tomllib.load(f)
 
 def setup(SCOPES: str):
   """

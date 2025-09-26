@@ -5,14 +5,16 @@ import re
 from email_service.email_grabber import EmailGrabber
 from model.model_wrapper import Gemini
 from writers.excel_writer import ExcelWriter
-from utils.utils import write_checkpoint, setup, rate_limit
+from utils.utils import write_checkpoint, setup, rate_limit, load_config
+
 
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 cwd = os.getcwd()
-senders = ["ticket-caisse@e-ticket.cooperative-u.fr"]
-model_name = "gemini-2.5-flash-lite"
-temperature = 0.2
+cfg = load_config()
+senders = cfg["senders"]
+model_name = cfg["model_name"]
+temperature = cfg["temperature"]
 checkpoint_file_path = os.path.join(cwd, "checkpoint.json")
 
 def main():
