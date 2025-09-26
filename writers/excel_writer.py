@@ -57,7 +57,7 @@ class ExcelWriter:
             price_per_unit = worksheet.cell(row=write_row, column=5, value=r.price_per_unit) 
             price_per_unit.number_format = tps.template_price_per_unit_format
 
-            date = worksheet.cell(row=write_row, column=6, value=r['date']) 
+            date = worksheet.cell(row=write_row, column=6, value=r.date) 
             date.number_format = "DD/MM/YYYY"
             date.alignment = Alignment(horizontal="right")
 
