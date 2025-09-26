@@ -23,7 +23,6 @@ def write_run_update_sh(proj: Path) -> Path:
     logs.mkdir(exist_ok=True)
     script = proj / "run_update.sh"
     venv_activate = proj / ".venv" / "bin" / "activate"
-    # if your venv path differs, edit this
     script.write_text(
         "#!/bin/zsh\n"
         f"cd {proj}\n"
@@ -49,8 +48,6 @@ def write_launchd_plist(script_path: Path) -> Path:
         "StandardOutPath": str(script_path.parent / "logs" / "launchd.out"),
         "StandardErrorPath": str(script_path.parent / "logs" / "launchd.err"),
         "EnvironmentVariables": {"PYTHONUNBUFFERED": "1"},
-        # If you want it to run also right after login:
-        # "RunAtLoad": True,
     }
     with plist_path.open("wb") as f:
         plistlib.dump(plist_dict, f)
