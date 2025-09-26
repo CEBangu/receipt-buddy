@@ -1,5 +1,6 @@
 import os
 import json
+import time
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -53,3 +54,31 @@ def setup(SCOPES: str):
       token.write(creds.to_json())
       
   return creds
+
+####################
+# dealing with free-tier gemini rate limits
+#####################
+
+RATE_LIMIT_RPM = 15
+MIN_SPACING = 60.0 / RATE_LIMIT_RPM
+_last_call_ts = 0.0
+
+def rate_limit():
+    """Ensure spacing between requests to stay under quota."""
+    global _last_call_ts
+    now = time.perf_counter()
+    wait = (_last_call_ts + MIN_SPACING) - now
+    if wait > 0:
+        time.sleep(wait)
+    _last_call_ts = time.perf_counter()
+
+def handle_quota_error(exc: Exception) -> float:
+    """
+    Inspect an exception, and if it's a 429 RESOURCE_EXHAUSTED,
+    return the suggested delay in seconds. Otherwise return -1.
+    """
+    msg = str(exc)
+    if "RESOURCE_EXHAUSTED" in msg or "429" in msg:
+        m = re.search(r"retry in ([\d\.]+)s", msg)
+        return float(m.group(1)) if m else 25.0
+    return -1.0

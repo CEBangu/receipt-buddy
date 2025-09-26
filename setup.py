@@ -1,9 +1,10 @@
 import os
+import time
 
 from email_service.email_grabber import EmailGrabber
 from model.model_wrapper import Gemini
 from writers.excel_writer import ExcelWriter
-from utils.utils import write_checkpoint, setup
+from utils.utils import write_checkpoint, setup, rate_limit, handle_quota_error
 
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
@@ -37,17 +38,28 @@ def main():
     number_of_receipts = len(payloads)
     receipts_processed = 1
     for payload in payloads:
-      try:
-        mo = gemini.respond(payload)
-        if mo and getattr(mo, "rows", None):
-          model_outputs.append(mo)
-          print(f"Receipt {receipts_processed}/{number_of_receipts} Processed")
-          receipts_processed += 1
-      except Exception as e:
-        # log and keeep going
-        print(f"Model failed on one payload: {e}")
-        print(payload)
-    
+      while True:
+        rate_limit()
+        try:
+          mo = gemini.respond(payload)
+          if mo and getattr(mo, "rows", None):
+            model_outputs.append(mo)
+            print(f"Receipt {receipts_processed}/{number_of_receipts} Processed")
+            receipts_processed += 1
+          break
+        except Exception as e:
+          msg = str(e)
+          if "RESOURCE_EXHAUSTED" in msg or "429" in msg:
+            # extract suggested wait time.
+            m = re.search(r"retry in ([\d\.]+)s", msg)
+            delay = float(m.group(1)) if m else 25.0
+            print(f"Rate limit hit. Sleeping {delay:.1f}s, retrying same receipt…")
+            time.sleep(delay)
+            continue  # retry SAME payload
+          else:
+            print(f"Model failed on one payload: {e}")
+            break
+        
     rows_to_write = []
     for mo in model_outputs:
       rows_to_write.extend(mo.rows)
