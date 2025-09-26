@@ -26,3 +26,5 @@ quickstart.py
 checkpoint.json
 receipt_buddy_first_ingest.xlsx
 /logs
+~$*
+run_update.sh
