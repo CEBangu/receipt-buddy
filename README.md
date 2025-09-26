@@ -20,4 +20,4 @@ If that is not the case, then you will need to change the function. I'll add som
 
 3. **Initialization:**
 
-Once that is done, create the venv with `uv --sync locked`. Then, run the `initialize.py` script. NB! This script creates a couple of notable things. Firslty, it creates an executable to run the `update.py` on its own, to add new receipts after the historical ones are done. It also creates a plist in `~Libray/LaunchAgents` to run the update script every 4 hours, to check for new receipts. If you DO NOT want this behaviour, you can run `initialize.py` manually, and then `update.py` whenever you want to look for new receipts.
+Once that is done, create the venv with `uv --sync locked`. Then, run the `initialize.py` script. NB! This script creates a couple of notable things. Firslty, it creates an executable to run the `update.py` on its own, to add new receipts after the historical ones are done. It also creates a plist in `~Libray/LaunchAgents` to run the update script every 4 hours, to check for new receipts. If you DO NOT want this behaviour, you can run `setup.py` manually, and then `update.py` whenever you want to look for new receipts.
