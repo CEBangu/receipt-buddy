@@ -2,6 +2,8 @@ import os
 import time
 import re
 
+from google.auth.exceptions import RefreshError
+
 from email_service.email_grabber import EmailGrabber
 from model.model_wrapper import Gemini
 from writers.excel_writer import ExcelWriter
@@ -18,7 +20,19 @@ checkpoint_file_path = os.path.join(cwd, "checkpoint.json")
 
 def main():
 
+  try:
     credentials = setup(SCOPES=SCOPES)
+    print("Credentials validated")
+  except RefreshError:
+    print("Token expired or revoked, re-authorizing...")
+    token_path = "token.json"
+    if os.path.exists(token_path):
+      os.remove(token_path)
+      print("Deleted expired/revoked token file")
+
+    credentials = setup(SCOPES=SCOPES)
+    print("Credentials re-created and validated")
+
     mail_grabber = EmailGrabber(credentials=credentials, senders=senders)
     gemini = Gemini(model_name=model_name, temperature=temperature)
     excel_writer = ExcelWriter(app_directory=cwd)
