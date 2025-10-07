@@ -58,7 +58,7 @@ class EmailGrabber:
         payloads: List[Dict[str, Any]] = []
         
         for message, ms in newer:
-            payload = self._get_attachment_payload(message=message, internal_ms=ms)
+            payload = self._get_attachment_payload(message=message, internal_ms_hint=ms)
             if payload is not None:
                 payloads.append(payload)
 
